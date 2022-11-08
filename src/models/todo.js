@@ -16,6 +16,10 @@ const TodoSchema = new Schema(
       type: Schema.Types.ObjectId,
       reference: "Tag",
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      reference: "User",
+    },
   },
   {
     timestamps: true,

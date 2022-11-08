@@ -1,4 +1,5 @@
 const TodoModel = require("../models/todo");
+const User = require("../models/user");
 
 exports.create = async (req, res) => {
   try {
@@ -9,10 +10,15 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.list = async (_, res) => {
+exports.list = async (req, res) => {
   try {
-    const result = await TodoModel.find({}).exec();
-    return res.send(result);
+    const user = await User.findOne({ email: req.decoded.email }).exec();
+    console.log(user);
+    if (user._id) {
+      const result = await TodoModel.find({ user: user._id }).exec();
+      return res.send(result);
+    }
+    return res.status(404).send();
   } catch (error) {
     return res.send(error);
   }
